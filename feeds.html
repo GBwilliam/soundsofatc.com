@@ -3,6 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sounds of ATC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f2f2f2; /* Default background color */
+        }
+    </style>
+</head>
+<body>
+
+    
+    <script>
+        function changeBackground() {
+            const backgroundSelector = document.getElementById("backgroundSelector");
+            const backgroundContainer = document.getElementById("backgroundContainer");
+            
+            if (backgroundSelector.value === "warm") {
+                backgroundContainer.style.background = "linear-gradient(to bottom right, #FFD700, #FF6B6B, #FF9500)";
+            } else if (backgroundSelector.value === "bright") {
+                backgroundContainer.style.background = "linear-gradient(to bottom right, #FFA500, #FF4500)";
+            } else {
+                backgroundContainer.style.background = "linear-gradient(135deg, #7145f5, #c603fc)";
+            }
+        }
+    </script>
+</body>
+</html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundsOfATC</title>
     <style>
         /* Basic styling */
