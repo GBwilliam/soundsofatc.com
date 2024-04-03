@@ -150,6 +150,21 @@
             <h3>North West Marine</h3>
             <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/maritime" preload="auto" autoplay="" controls=""></audio>
         </div>
+        <script>
+
+function onPlayAudio({target}) {
+    document.querySelectorAll("audio").forEach(a => {
+        if (a.src !== target.src) a.pause()
+    })
+}
+
+
+document.querySelectorAll("audio").forEach(a => {
+  a.addEventListener("play", onPlayAudio);    
+})
+
+</script>
+        
     </section>
 </main>
 
