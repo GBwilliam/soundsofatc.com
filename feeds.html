@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundsOfATC</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f2f2f2;
+            color: #333;
+            line-height: 1.6;
+        }
+        .atc-feed {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .atc-feed:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .atc-feed h3 {
+            margin: 0;
+            font-size: 22px;
+            color: #333;
+        }
+        .section {
+            margin-top: 40px;
+        }
+        .section h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            font-size: 28px;
+        }
+        audio {
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SoundsOfATC</h1>
+</header>
+
+<nav>
+    <a href="https://soundsofatc.com">Home</a>
+    <a href="https://soundsofatc.com/feeds">Feeds</a>
+    <a href="https://soundsofatc.com/submit">Submit a feed</a>
+    <a href="https://soundsofatc.com/help">Help</a>
+</nav>
+
+<main>
+    <section class="section">
+        <h2>General scanning</h2>
+        <div class="atc-feed">
+            <h3>PMR & Miscellaneous Scanning</h3>
+            <h3>Feed location: Cheshire, UK</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/pmr" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>North West VHF Scanning</h3>
+            <h3>Feed location: Cheshire, UK</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/vhf" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>North West Fireground</h3>
+            <h3>Feed location: Cheshire, UK</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/fireground" preload="auto" autoplay="" controls=""></audio>
+        </div>
+    </section>
+    
+    <section class="section">
+        <h2>Aviation</h2>
+        <div class="atc-feed">
+            <h3>ATCC UK - London/Scottish Control</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/atcc" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>London North Control (S03 Lakes) - 133.700</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/london-s03" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>Liverpool John Lennon Airport (EGGP)</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/eggp" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>Chester Hawarden Airport (EGNR)</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/egnr" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>Manchester Airport (EGCC)</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/egcc" preload="auto" autoplay="" controls=""></audio>
+        </div>
+        <div class="atc-feed">
+            <h3>London North Control (S03 Lakes) - 133.700</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/london-s03" preload="auto" autoplay="" controls=""></audio>
+        </div>
+    </section>
+    
+    <section class="section">
+        <h2>Marine</h2>
+        <div class="atc-feed">
+            <h3>North West Marine</h3>
+            <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/maritime" preload="auto" autoplay="" controls=""></audio>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
