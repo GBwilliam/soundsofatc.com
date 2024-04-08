@@ -118,7 +118,18 @@
             <h3>ATCC UK - London/Scottish Control</h3>
             <audio crossorigin="anonymous" src="https://audio.soundsofatc.com/atcc" preload="auto" autoplay="" controls=""></audio>
         </div>
-           </section>
+        <script>
+            function onPlayAudio({target}) {
+                document.querySelectorAll("audio").forEach(a => {
+                    if (a.src !== target.src) a.pause()
+                })
+            }
+
+            document.querySelectorAll("audio").forEach(a => {
+                a.addEventListener("play", onPlayAudio);    
+            })
+        </script>
+    </section>
 </main>
 
 </body>
