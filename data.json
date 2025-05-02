@@ -454,5 +454,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) Fire",
+    "type": "AM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "121.600",
+    "tx_freq": "121.600",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   }
 ]
