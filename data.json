@@ -386,7 +386,7 @@
       "Emergency"
     ],
     "rx_freq": "455.8375 MHz",
-    "tx_freq": "461.1375",
+    "tx_freq": "461.1375 MHz",
     "offset": "",
     "ctcss_tone": "",
     "dcs_code": "",
