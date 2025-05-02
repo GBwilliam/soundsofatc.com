@@ -59,6 +59,12 @@
                 grid-template-columns: 1fr;
             }
         }
+        .last-update {
+            font-size: 0.9em;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -66,84 +72,125 @@
     
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search frequencies..." onkeyup="searchTable()">
+        <div id="lastUpdate" class="last-update"></div>
     </div>
     
     <div id="frequency-list">Loading frequency data...</div>
 
     <script>
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                let html = `
-                    <table id="freqTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Frequency</th>
-                                <th>Users</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
+        // ===== Auto-Update Functionality =====
+        let lastDataHash = '';
+        const refreshInterval = 30000; // 30 seconds
+        
+        // Main function to load and display data
+        async function loadData() {
+            try {
+                // Fetch with cache-busting parameter
+                const response = await fetch('data.json?t=' + new Date().getTime());
+                const data = await response.json();
+                const newHash = await hashData(data);
                 
-                data.forEach((freq, index) => {
-                    // Format type badge
-                    const typeClass = `badge-${freq.type.toLowerCase()}`;
-                    const typeBadge = `<span class="badge ${typeClass}">${freq.type}</span>`;
-                    
-                    // Format status
-                    const statusClass = freq.status === 'Active' ? 'active' : 'inactive';
-                    const statusDisplay = `<span class="${statusClass}">${freq.status || 'Unknown'}</span>`;
-                    
-                    // Format frequency display
-                    const freqDisplay = freq.rx_freq === freq.tx_freq ? 
-                        freq.rx_freq : 
-                        `RX: ${freq.rx_freq}<br>TX: ${freq.tx_freq}`;
-                    
-                    // Main row
-                    html += `
-                        <tr class="main-row" data-idx="${index}">
-                            <td>${freq.name}</td>
-                            <td>${typeBadge}</td>
-                            <td>${freqDisplay}</td>
-                            <td>${freq.users ? freq.users.join(', ') : 'N/A'}</td>
-                            <td>${freq.location}</td>
-                            <td>${statusDisplay}</td>
-                            <td><button onclick="toggleDetails(${index})">▼ Details</button></td>
-                        </tr>
-                        <tr class="details-row" id="details-${index}">
-                            <td colspan="7" class="details-cell">
-                                <div class="details-grid">
-                                    <div><strong>Offset:</strong> ${freq.offset || 'N/A'}</div>
-                                    <div><strong>CTCSS:</strong> ${freq.ctcss_tone || 'N/A'}</div>
-                                    <div><strong>DCS Code:</strong> ${freq.dcs_code || 'N/A'}</div>
-                                    <div><strong>Colour Code:</strong> ${freq.colour_code || 'N/A'}</div>
-                                    <div><strong>Talkgroup:</strong> ${freq.talkgroup || 'N/A'}</div>
-                                    <div><strong>Timeslot:</strong> ${freq.timeslot || 'N/A'}</div>
-                                </div>
-                                ${freq.notes ? `<div style="margin-top:10px;"><strong>Notes:</strong> ${freq.notes}</div>` : ''}
-                                ${freq.website ? `<div style="margin-top:10px;"><strong>Website:</strong> <a href="${freq.website}" target="_blank">${freq.website}</a></div>` : ''}
-                            </td>
-                        </tr>
-                    `;
-                });
-                
-                html += `
-                        </tbody>
-                    </table>
-                `;
-                
-                document.getElementById('frequency-list').innerHTML = html;
-            })
-            .catch(error => {
+                // Only update if data has changed
+                if (newHash !== lastDataHash) {
+                    lastDataHash = newHash;
+                    updateTable(data);
+                    updateLastUpdateTime();
+                }
+            } catch (error) {
                 console.error('Error loading data:', error);
                 document.getElementById('frequency-list').innerHTML = 
                     '<p>Error loading frequency data. Please try again later.</p>';
+            }
+        }
+        
+        // Generate hash of data to detect changes
+        async function hashData(data) {
+            const str = JSON.stringify(data);
+            const encoder = new TextEncoder();
+            const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(str));
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        
+        // Update the "last updated" timestamp
+        function updateLastUpdateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+        
+        // ===== Your Existing Table Code =====
+        function updateTable(data) {
+            let html = `
+                <table id="freqTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Frequency</th>
+                            <th>Users</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            data.forEach((freq, index) => {
+                // Format type badge
+                const typeClass = `badge-${freq.type.toLowerCase()}`;
+                const typeBadge = `<span class="badge ${typeClass}">${freq.type}</span>`;
+                
+                // Format status
+                const statusClass = freq.status === 'Active' ? 'active' : 'inactive';
+                const statusDisplay = `<span class="${statusClass}">${freq.status || 'Unknown'}</span>`;
+                
+                // Format frequency display
+                const freqDisplay = freq.rx_freq === freq.tx_freq ? 
+                    freq.rx_freq : 
+                    `RX: ${freq.rx_freq}<br>TX: ${freq.tx_freq}`;
+                
+                // Main row
+                html += `
+                    <tr class="main-row" data-idx="${index}">
+                        <td>${freq.name}</td>
+                        <td>${typeBadge}</td>
+                        <td>${freqDisplay}</td>
+                        <td>${freq.users ? freq.users.join(', ') : 'N/A'}</td>
+                        <td>${freq.location}</td>
+                        <td>${statusDisplay}</td>
+                        <td><button onclick="toggleDetails(${index})">▼ Details</button></td>
+                    </tr>
+                    <tr class="details-row" id="details-${index}">
+                        <td colspan="7" class="details-cell">
+                            <div class="details-grid">
+                                <div><strong>Offset:</strong> ${freq.offset || 'N/A'}</div>
+                                <div><strong>CTCSS:</strong> ${freq.ctcss_tone || 'N/A'}</div>
+                                <div><strong>DCS Code:</strong> ${freq.dcs_code || 'N/A'}</div>
+                                <div><strong>Colour Code:</strong> ${freq.colour_code || 'N/A'}</div>
+                                <div><strong>Talkgroup:</strong> ${freq.talkgroup || 'N/A'}</div>
+                                <div><strong>Timeslot:</strong> ${freq.timeslot || 'N/A'}</div>
+                            </div>
+                            ${freq.notes ? `<div style="margin-top:10px;"><strong>Notes:</strong> ${freq.notes}</div>` : ''}
+                            ${freq.website ? `<div style="margin-top:10px;"><strong>Website:</strong> <a href="${freq.website}" target="_blank">${freq.website}</a></div>` : ''}
+                        </td>
+                    </tr>
+                `;
             });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('frequency-list').innerHTML = html;
+            
+            // Hide all details initially
+            document.querySelectorAll('.frequency-details').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
 
         function toggleDetails(index) {
             const detailsRow = document.getElementById(`details-${index}`);
@@ -179,6 +226,15 @@
                 if (rows[i+1]) rows[i+1].style.display = found ? "" : "none";
             }
         }
+        
+        // ===== Initialize =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial load
+            loadData();
+            
+            // Set up periodic refresh
+            setInterval(loadData, refreshInterval);
+        });
     </script>
 </body>
 </html>
