@@ -511,5 +511,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) Tower UHF",
+    "type": "NFM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "455.700",
+    "tx_freq": "460.000",
+    "offset": "null",
+    "ctcss_tone": "82.5",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   }
 ]
