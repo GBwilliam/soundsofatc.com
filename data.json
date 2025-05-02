@@ -473,5 +473,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) Raytheon Ops",
+    "type": "AM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "131.965",
+    "tx_freq": "131.965",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   }
 ]
