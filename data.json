@@ -380,25 +380,6 @@
     "notes": ""
   },
   {
-    "name": "Chester Hawarden Airport (EGNR) Tower",
-    "type": "AM",
-    "users": [
-      "Air Traffic Control"
-    ],
-    "rx_freq": "124.950",
-    "tx_freq": "124.950",
-    "offset": "null",
-    "ctcss_tone": "null",
-    "dcs_code": "null",
-    "colour_code": "null",
-    "talkgroup": "null",
-    "timeslot": "null",
-    "location": "Chester, United Kingdom",
-    "status": "Active",
-    "website": "null",
-    "notes": "null"
-  },
-  {
     "name": "Liverpool John Lennon Airport (EGGP) Fire Control",
     "type": "DMR",
     "users": [
@@ -416,6 +397,25 @@
     "status": "Active",
     "website": "",
     "notes": ""
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) Tower",
+    "type": "AM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "124.950",
+    "tx_freq": "124.950",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   },
   {
     "name": "Chester Hawarden Airport (EGNR) Radar",
