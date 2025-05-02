@@ -435,5 +435,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) ATIS",
+    "type": "AM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "125.425",
+    "tx_freq": "125.425",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   }
 ]
