@@ -3,28 +3,105 @@
 <head>
     <title>Radio Frequencies</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .search-container {
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
     <h1>Radio Frequency Database</h1>
-    <div id="frequency-list"></div>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search frequencies..." onkeyup="searchTable()">
+    </div>
+    
+    <div id="frequency-list">Loading data...</div>
 
     <script>
         fetch('data.json')
             .then(response => response.json())
             .then(data => {
-                let html = '<table><tr><th>Frequency</th><th>Name</th><th>Type</th><th>Location</th><th>Notes</th></tr>';
+                let html = `
+                    <table id="freqTable">
+                        <thead>
+                            <tr>
+                                <th>Frequency</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
                 data.forEach(freq => {
-                    html += `<tr>
-                        <td>${freq.frequency}</td>
-                        <td>${freq.name}</td>
-                        <td>${freq.type}</td>
-                        <td>${freq.location}</td>
-                        <td>${freq.notes}</td>
-                    </tr>`;
+                    html += `
+                        <tr>
+                            <td>${freq.frequency || 'N/A'}</td>
+                            <td>${freq.name || ''}</td>
+                            <td>${freq.type || ''}</td>
+                            <td>${freq.location || ''}</td>
+                            <td>${freq.notes || ''}</td>
+                        </tr>
+                    `;
                 });
-                html += '</table>';
+                
+                html += `
+                        </tbody>
+                    </table>
+                `;
+                
                 document.getElementById('frequency-list').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('frequency-list').innerHTML = 
+                    '<p>Error loading frequency data. Please try again later.</p>';
             });
+
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("freqTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const td = tr[i].getElementsByTagName("td");
+                
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        const txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                
+                tr[i].style.display = found ? "" : "none";
+            }
+        }
     </script>
 </body>
 </html>
