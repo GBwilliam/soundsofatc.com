@@ -348,7 +348,7 @@
       "Air Traffic Control"
     ],
     "rx_freq": "455.600 MHz",
-    "tx_freq": "460.900",
+    "tx_freq": "460.900 MHz",
     "offset": "",
     "ctcss_tone": "103.5",
     "dcs_code": "",
@@ -367,7 +367,7 @@
       "Air Traffic Control"
     ],
     "rx_freq": "455.800 MHz",
-    "tx_freq": "461.100",
+    "tx_freq": "461.100 MHz",
     "offset": "",
     "ctcss_tone": "103.5",
     "dcs_code": "",
