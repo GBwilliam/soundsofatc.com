@@ -567,6 +567,6 @@
     "location": "Chester, United Kingdom",
     "status": "Active",
     "website": "null",
-    "notes": "Channel 1: 441.2375 MHz, CC: 1,\nChannel 2: 441.2375 MHz, CC: 1,\nChannel 3: 441.0375 MHz, CC: 1,\nChannel 4: 441.0375 MHz, CC: 1,\nChannel 5: 440.550 MHz, CC: 3,\nChannel 6: 440.550 MHz, CC: 3."
+    "notes": "Channel 1: 441.2375 MHz CC: 1,\nChannel 2: 441.2375 MHz CC: 1,\nChannel 3: 441.0375 MHz CC: 1,\nChannel 4: 441.0375 MHz CC: 1,\nChannel 5: 440.550 MHz CC: 3,\nChannel 6: 440.550 MHz CC: 3."
   }
 ]
