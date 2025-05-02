@@ -416,5 +416,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Chester Hawarden Airport (EGNR) Director",
+    "type": "AM",
+    "users": [
+      "Air Traffic Control"
+    ],
+    "rx_freq": "130.015",
+    "tx_freq": "130.015",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "null",
+    "talkgroup": "null",
+    "timeslot": "null",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "null"
   }
 ]
