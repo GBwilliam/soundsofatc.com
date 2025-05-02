@@ -587,5 +587,24 @@
     "status": "Active",
     "website": "null",
     "notes": "Simplex DMR"
+  },
+  {
+    "name": "Mainsway Ltd",
+    "type": "DMR",
+    "users": [
+      "Business"
+    ],
+    "rx_freq": "165.6875",
+    "tx_freq": "170.4875",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "11",
+    "talkgroup": "1",
+    "timeslot": "1/2",
+    "location": "United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "Standard DMR Tier II"
   }
 ]
