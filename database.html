@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Radio Frequencies</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Radio Frequency Database</h1>
+    <div id="frequency-list"></div>
+
+    <script>
+        fetch('data/frequencies.json')
+            .then(response => response.json())
+            .then(data => {
+                let html = '<table><tr><th>Frequency</th><th>Name</th><th>Type</th><th>Location</th><th>Notes</th></tr>';
+                data.forEach(freq => {
+                    html += `<tr>
+                        <td>${freq.frequency}</td>
+                        <td>${freq.name}</td>
+                        <td>${freq.type}</td>
+                        <td>${freq.location}</td>
+                        <td>${freq.notes}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                document.getElementById('frequency-list').innerHTML = html;
+            });
+    </script>
+</body>
+</html>
