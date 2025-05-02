@@ -9,7 +9,7 @@
     <div id="frequency-list"></div>
 
     <script>
-        fetch('data/database.json')
+        fetch('data/data.json')
             .then(response => response.json())
             .then(data => {
                 let html = '<table><tr><th>Frequency</th><th>Name</th><th>Type</th><th>Location</th><th>Notes</th></tr>';
