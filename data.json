@@ -549,5 +549,24 @@
     "status": "Active",
     "website": "null",
     "notes": "null"
+  },
+  {
+    "name": "Cheshire West and Chester Council",
+    "type": "DMR",
+    "users": [
+      "Business"
+    ],
+    "rx_freq": "441.2375",
+    "tx_freq": "null",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "1",
+    "talkgroup": "21",
+    "timeslot": "CHID 1/2/3/4/5/6",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "Channel 1: 441.2375 MHz, CC: 1\nChannel 2: 441.2375 MHz, CC: 1\nChannel 3: 441.0375 MHz, CC: 1\nChannel 4: 441.0375 MHz, CC: 1\nChannel 5: 440.550 MHz, CC: 3\nChannel 6: 440.550 MHz, CC: 3"
   }
 ]
