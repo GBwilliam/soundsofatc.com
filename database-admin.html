@@ -1,61 +1,430 @@
-<div id="form-editor">
-    <h2>Add New Frequency</h2>
-    <form id="frequencyForm">
-        <input type="text" name="name" placeholder="Name (e.g., Local Repeater)" required>
-        <select name="type" required>
-            <option value="FM">NFM</option>
-            <option value="SSB">FM/Telem</option>
-            <option value="DMR">DMR</option>
-            <option value="SSB">AM</option>
-        </select>
-        
-        <div class="grid">
-            <input type="text" name="rx_freq" placeholder="RX Freq (e.g., 145.250 MHz)" required>
-            <input type="text" name="tx_freq" placeholder="TX Freq" required>
-            <input type="text" name="offset" placeholder="Offset (e.g., -0.600 MHz)">
-        </div>
-
-        <div class="grid">
-            <input type="text" name="ctcss_tone" placeholder="CTCSS (e.g., 110.9 Hz)">
-            <input type="text" name="dcs_code" placeholder="DCS Code">
-            <input type="number" name="color_code" placeholder="Color Code (DMR)">
-        </div>
-
-        <div class="grid" id="dmr-fields">
-            <input type="text" name="talkgroup" placeholder="Talkgroup (DMR)">
-            <input type="number" name="timeslot" placeholder="Timeslot (DMR)">
-        </div>
-
-        <input type="text" name="location" placeholder="Location">
-        <textarea name="notes" placeholder="Notes"></textarea>
-        <button type="submit">Save</button>
-    </form>
-</div>
-
-<script>
-    // Dynamic form handling
-    document.getElementById('frequencyForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const newEntry = Object.fromEntries(formData.entries());
-        
-        // Clean empty fields
-        for (const key in newEntry) {
-            if (newEntry[key] === '') newEntry[key] = null;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frequency Database Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            max-width: 1200px;
         }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #frequencyList {
+            margin-top: 30px;
+        }
+        .frequency-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .status-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .auth-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            .form-container, .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+        .badge-am {
+            background-color: #e74c3c;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aviation Frequency Database Admin</h1>
+    
+    <div class="auth-container">
+        <h2>GitHub Authentication</h2>
+        <div class="form-group">
+            <label for="githubToken">GitHub Personal Access Token:</label>
+            <input type="password" id="githubToken" placeholder="ghp_yourTokenHere">
+            <small>Create one at: Settings → Developer settings → Personal access tokens (repo scope required)</small>
+        </div>
+        <div class="form-group">
+            <label for="repoPath">Repository Path:</label>
+            <input type="text" id="repoPath" placeholder="yourusername/yourrepo">
+            <small>Format: username/repository (e.g., johndoe/frequency-db)</small>
+        </div>
+        <button onclick="verifyToken()">Verify Connection</button>
+        <div id="authStatus" class="status-message"></div>
+    </div>
 
-        // Add to JSON and save
-        fetch('data/frequencies.json')
-            .then(response => response.json())
-            .then(data => {
-                data.push(newEntry);
-                updateGitHubFile(JSON.stringify(data, null, 2)); // Reuse GitHub API function
+    <div class="form-container">
+        <div>
+            <h2>Add/Edit Frequency</h2>
+            <form id="frequencyForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select id="type" required>
+                        <option value="AM" selected>AM</option>
+                        <option value="FM">FM</option>
+                    </select>
+                </div>
+                
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="rx_freq">RX Frequency:</label>
+                        <input type="text" id="rx_freq" placeholder="133.700 MHz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tx_freq">TX Frequency:</label>
+                        <input type="text" id="tx_freq" placeholder="133.700 MHz" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="users">Users (comma separated):</label>
+                    <input type="text" id="users" placeholder="Air Traffic Control" value="Air Traffic Control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" placeholder="United Kingdom" value="United Kingdom">
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status">
+                        <option value="Active" selected>Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" rows="2"></textarea>
+                </div>
+                
+                <input type="hidden" id="editIndex">
+                <button type="button" onclick="saveFrequency()">Save Frequency</button>
+                <button type="button" onclick="clearForm()">Clear Form</button>
+                <div id="formStatus" class="status-message"></div>
+            </form>
+        </div>
+        
+        <div id="frequencyList">
+            <h2>Current Frequencies</h2>
+            <div id="frequenciesContainer">
+                <p>Loading frequencies...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentData = [];
+        let currentSha = '';
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load initial data if token exists
+            if (localStorage.getItem('githubToken')) {
+                document.getElementById('githubToken').value = localStorage.getItem('githubToken');
+                document.getElementById('repoPath').value = localStorage.getItem('repoPath') || '';
+                loadData();
+            }
+        });
+        
+        // Verify GitHub token
+        async function verifyToken() {
+            const token = document.getElementById('githubToken').value;
+            const repoPath = document.getElementById('repoPath').value;
+            
+            if (!token || !repoPath) {
+                showMessage('authStatus', 'Please enter both token and repository path', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoPath}/contents/data.json`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                
+                if (response.ok) {
+                    localStorage.setItem('githubToken', token);
+                    localStorage.setItem('repoPath', repoPath);
+                    showMessage('authStatus', '✓ Connected successfully! Loading data...', 'success');
+                    loadData();
+                } else {
+                    throw new Error('Invalid token or repository');
+                }
+            } catch (error) {
+                showMessage('authStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Load data from GitHub
+        async function loadData() {
+            const token = localStorage.getItem('githubToken');
+            const repoPath = localStorage.getItem('repoPath');
+            
+            if (!token || !repoPath) return;
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoPath}/contents/data.json`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                
+                if (response.ok) {
+                    const fileData = await response.json();
+                    currentData = JSON.parse(atob(fileData.content));
+                    currentSha = fileData.sha;
+                    renderFrequencyList();
+                    showMessage('formStatus', 'Data loaded successfully', 'success');
+                } else {
+                    throw new Error('Failed to load data');
+                }
+            } catch (error) {
+                showMessage('formStatus', `Error loading data: ${error.message}`, 'error');
+            }
+        }
+        
+        // Render frequency list
+        function renderFrequencyList() {
+            const container = document.getElementById('frequenciesContainer');
+            if (currentData.length === 0) {
+                container.innerHTML = '<p>No frequencies found</p>';
+                return;
+            }
+            
+            let html = '';
+            currentData.forEach((freq, index) => {
+                html += `
+                    <div class="frequency-item">
+                        <h3>${freq.name} <span class="badge-am">${freq.type}</span></h3>
+                        <p><strong>Frequency:</strong> ${freq.rx_freq}</p>
+                        <p><strong>Users:</strong> ${freq.users.join(', ')}</p>
+                        <p><strong>Location:</strong> ${freq.location}</p>
+                        <p><strong>Status:</strong> <span class="${freq.status === 'Active' ? 'active' : 'inactive'}">${freq.status}</span></p>
+                        <button onclick="editFrequency(${index})">Edit</button>
+                        <button onclick="deleteFrequency(${index})">Delete</button>
+                    </div>
+                `;
             });
-    });
-
-    // Show/hide DMR fields based on type selection
-    document.querySelector('[name="type"]').addEventListener('change', (e) => {
-        document.getElementById('dmr-fields').style.display = 
-            (e.target.value === 'DMR') ? 'block' : 'none';
-    });
-</script>
+            
+            container.innerHTML = html;
+        }
+        
+        // Save frequency to data
+        async function saveFrequency() {
+            const token = localStorage.getItem('githubToken');
+            const repoPath = localStorage.getItem('repoPath');
+            
+            if (!token || !repoPath) {
+                showMessage('formStatus', 'Please authenticate first', 'error');
+                return;
+            }
+            
+            const form = document.getElementById('frequencyForm');
+            const editIndex = document.getElementById('editIndex').value;
+            
+            const frequency = {
+                name: document.getElementById('name').value,
+                type: document.getElementById('type').value,
+                rx_freq: document.getElementById('rx_freq').value,
+                tx_freq: document.getElementById('tx_freq').value,
+                users: document.getElementById('users').value.split(',').map(u => u.trim()),
+                location: document.getElementById('location').value,
+                status: document.getElementById('status').value,
+                offset: "null",
+                ctcss_tone: "null",
+                dcs_code: "null",
+                colour_code: "null",
+                talkgroup: "null",
+                timeslot: "null",
+                website: "null",
+                notes: document.getElementById('notes').value || "null"
+            };
+            
+            // Validate required fields
+            if (!frequency.name || !frequency.type || !frequency.rx_freq || !frequency.tx_freq) {
+                showMessage('formStatus', 'Please fill in all required fields', 'error');
+                return;
+            }
+            
+            try {
+                // Update or add the frequency
+                if (editIndex !== '') {
+                    currentData[editIndex] = frequency;
+                } else {
+                    currentData.push(frequency);
+                }
+                
+                // Convert to pretty-printed JSON
+                const newContent = JSON.stringify(currentData, null, 2);
+                
+                // Update file on GitHub
+                const response = await fetch(`https://api.github.com/repos/${repoPath}/contents/data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: editIndex !== '' ? 
+                            `Updated frequency: ${frequency.name}` : 
+                            `Added frequency: ${frequency.name}`,
+                        content: btoa(unescape(encodeURIComponent(newContent))),
+                        sha: currentSha
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    currentSha = result.content.sha;
+                    showMessage('formStatus', 'Frequency saved successfully!', 'success');
+                    clearForm();
+                    loadData(); // Refresh the list
+                } else {
+                    throw new Error('Failed to save data');
+                }
+            } catch (error) {
+                showMessage('formStatus', `Error saving frequency: ${error.message}`, 'error');
+            }
+        }
+        
+        // Edit existing frequency
+        function editFrequency(index) {
+            const freq = currentData[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('name').value = freq.name;
+            document.getElementById('type').value = freq.type;
+            document.getElementById('rx_freq').value = freq.rx_freq;
+            document.getElementById('tx_freq').value = freq.tx_freq;
+            document.getElementById('users').value = freq.users.join(', ');
+            document.getElementById('location').value = freq.location;
+            document.getElementById('status').value = freq.status;
+            document.getElementById('notes').value = freq.notes !== "null" ? freq.notes : '';
+            
+            // Scroll to form
+            document.getElementById('frequencyForm').scrollIntoView();
+            showMessage('formStatus', `Editing: ${freq.name}`, 'success');
+        }
+        
+        // Delete frequency
+        async function deleteFrequency(index) {
+            if (!confirm('Are you sure you want to delete this frequency?')) return;
+            
+            const token = localStorage.getItem('githubToken');
+            const repoPath = localStorage.getItem('repoPath');
+            const freqName = currentData[index].name;
+            
+            try {
+                currentData.splice(index, 1);
+                const newContent = JSON.stringify(currentData, null, 2);
+                
+                const response = await fetch(`https://api.github.com/repos/${repoPath}/contents/data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Deleted frequency: ${freqName}`,
+                        content: btoa(unescape(encodeURIComponent(newContent))),
+                        sha: currentSha
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    currentSha = result.content.sha;
+                    showMessage('formStatus', 'Frequency deleted successfully!', 'success');
+                    loadData(); // Refresh the list
+                } else {
+                    throw new Error('Failed to delete frequency');
+                }
+            } catch (error) {
+                showMessage('formStatus', `Error deleting frequency: ${error.message}`, 'error');
+            }
+        }
+        
+        // Clear form
+        function clearForm() {
+            document.getElementById('frequencyForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.getElementById('type').value = 'AM';
+            document.getElementById('users').value = 'Air Traffic Control';
+            document.getElementById('location').value = 'United Kingdom';
+            document.getElementById('status').value = 'Active';
+        }
+        
+        // Show status message
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `status-message ${type}`;
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
