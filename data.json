@@ -5,7 +5,7 @@
         "users": ["Air Traffic Control"],
         "rx_freq": "133.700 MHz",
         "tx_freq": "133.700 MHz",
-        "offset": "null",
+        "offset": "test",
         "ctcss_tone": "null",
         "dcs_code": null,
         "colour_code": null,
