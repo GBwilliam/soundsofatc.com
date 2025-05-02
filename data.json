@@ -568,5 +568,24 @@
     "status": "Active",
     "website": "null",
     "notes": "Channel 1: 441.2375 MHz CC: 1,\nChannel 2: 441.2375 MHz CC: 1,\nChannel 3: 441.0375 MHz CC: 1,\nChannel 4: 441.0375 MHz CC: 1,\nChannel 5: 440.550 MHz CC: 3,\nChannel 6: 440.550 MHz CC: 3."
+  },
+  {
+    "name": "Costco (Chester)",
+    "type": "AM",
+    "users": [
+      "Business"
+    ],
+    "rx_freq": "460.175",
+    "tx_freq": "460.175",
+    "offset": "null",
+    "ctcss_tone": "null",
+    "dcs_code": "null",
+    "colour_code": "9",
+    "talkgroup": "123",
+    "timeslot": "1/2",
+    "location": "Chester, United Kingdom",
+    "status": "Active",
+    "website": "null",
+    "notes": "Simplex DMR"
   }
 ]
