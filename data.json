@@ -399,6 +399,25 @@
     "notes": "null"
   },
   {
+    "name": "Liverpool John Lennon Airport (EGGP) Fire Control",
+    "type": "DMR",
+    "users": [
+      "Emergency"
+    ],
+    "rx_freq": "455.8375 MHz",
+    "tx_freq": "461.1375",
+    "offset": "",
+    "ctcss_tone": "",
+    "dcs_code": "",
+    "colour_code": "7",
+    "talkgroup": "1000",
+    "timeslot": "1",
+    "location": "Liverpool, United Kingdom",
+    "status": "Active",
+    "website": "",
+    "notes": ""
+  },
+  {
     "name": "Chester Hawarden Airport (EGNR) Radar",
     "type": "AM",
     "users": [
